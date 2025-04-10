@@ -128,4 +128,18 @@ public static class Extensions {
         angle = (int)(Mathf.RoundToInt(angle < 0 ? 360 + angle : angle + 45) / 90) * 90;
         return Quaternion.AngleAxis(angle, Vector3.forward);
     }
+
+    public static Collider2D Closest(this Collider2D[] colliders, Vector2 position) {
+        Collider2D returnValue = null;
+        float closest = float.MaxValue;
+        foreach (Collider2D collider in colliders) {
+            float distance = Vector2.Distance(position, collider.transform.position);
+            if (distance < closest) {
+                closest = distance;
+                returnValue = collider;
+            }
+        }
+
+        return returnValue;
+    }
 }

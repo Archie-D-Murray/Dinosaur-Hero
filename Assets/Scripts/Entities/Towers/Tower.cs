@@ -16,11 +16,14 @@ namespace Entities.Towers {
         [SerializeField] protected float _range;
         [SerializeField] protected Health _health;
         [SerializeField] protected CountDownTimer _attackTimer;
+        [SerializeField] protected GameObject _projectile;
         [SerializeField] protected float _attackTime;
         [SerializeField] protected LayerMask _enemy;
         [SerializeField] protected bool _canShoot = true;
         [SerializeField] protected Animator _animator;
         [SerializeField] protected SFXEmitter _emitter;
+        [SerializeField] protected float _projectileDuration;
+        [SerializeField] protected float _projectileSpeed;
 
         protected List<Timer> _timers = new List<Timer>();
 
@@ -33,14 +36,13 @@ namespace Entities.Towers {
             _attackTimer.Start();
             _emitter = GetComponent<SFXEmitter>();
             _animator = GetComponentInChildren<Animator>();
-            _health.onDeath += () => {
+            _health.OnDeath += () => {
                 _canShoot = false;
-                GridManager.Instance.RemoveTower(this);
                 Instantiate(Assets.Instance.towerDeathParticles, transform.position, transform.rotation);
                 Destroy(gameObject, _emitter.Length(SoundEffectType.Death));
                 enabled = false;
             };
-            _health.onDamage += (_) => {
+            _health.OnDamage += (_, _) => {
                 _emitter.Play(SoundEffectType.Hit);
                 Instantiate(Assets.Instance.towerHitParticles, transform.position, Quaternion.identity)
                     .GetOrAddComponent<AutoDestroy>().Duration = 1f;

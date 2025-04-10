@@ -17,7 +17,7 @@ public class Movement : MonoBehaviour {
 
     void Start() {
         if (TryGetComponent<Health>(out Health health)) {
-            health.onDeath += () => canMove = false;
+            health.OnDeath += () => canMove = false;
         }
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }

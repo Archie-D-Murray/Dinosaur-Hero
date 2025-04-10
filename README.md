@@ -1,16 +1,16 @@
 ## Theme:
 Dinosaur Heros
 
-Player plays as dinosaurs defending from natural disasters
+Player queues up dinos to escape from natural disasters (towers)
 
 Disasters:
-- Dust Cloud - Disables all turrets for a period of time
-- Volcano - Sets towers on fire
-- Ice age freezes nearby towers
-- Earthquake
+- Dust Cloud - Freezes movement for second
+- Volcano - DoT
+- Ice age - slows nearby
+- Earthquake - AoE damage
 
-Towers:
-- Ankylo - knockback
+Dinos:
+- Ankylo - AoE
 - Allo - DoT
 - Rex - Rage/Frenzy (ramping attack speed)
-- Stego - Thorns
+- Stego - Thorns - reflects damage on hit

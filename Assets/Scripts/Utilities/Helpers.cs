@@ -10,6 +10,9 @@ namespace Utilities {
         protected override void Awake() {
             base.Awake();
             MainCamera = Camera.main;
+            PhysicsFPS = Mathf.Round(1.0f / Time.fixedUnscaledDeltaTime);
+            Debug.Log($"Target physics frameRate => {PhysicsFPS}");
+
         }
         public Camera MainCamera;
         private Vector2 _mousePosition;
@@ -43,5 +46,13 @@ namespace Utilities {
         private void FixedUpdate() {
             _mousePosition = GetWorldMousePosition();
         }
+
+        public static Quaternion Look2D(Vector3 from, Vector3 to) {
+            return Quaternion.AngleAxis(Vector2.SignedAngle(Vector2.up, (to - from).normalized), Vector3.forward);
+        }
+
+        private static float PhysicsFPS;
+
+        public static float NormalizedFixedDeltaTime => Time.fixedDeltaTime * PhysicsFPS;
     }
 }

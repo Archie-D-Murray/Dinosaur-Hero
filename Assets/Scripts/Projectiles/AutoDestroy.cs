@@ -8,5 +8,9 @@ namespace ProjectileComponents {
         public void Start() {
             Destroy(gameObject, Duration);
         }
+
+        public void OnTriggerEnter2D(Collider2D collider) {
+            Destroy(collider, 0.1f);
+        }
     }
 }

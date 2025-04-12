@@ -35,9 +35,16 @@ public class Globals : Singleton<Globals> {
             _storage[i] = new DinoStorage((DinoType)values.GetValue(i));
             _lookup.Add(_storage[i].Type, i);
         }
+        if (TowerLayer == 0) {
+            TowerLayer = 1 << LayerMask.NameToLayer("Tower");
+        }
+        if (DinoLayer == 0) {
+            DinoLayer = 1 << LayerMask.NameToLayer("Dino");
+        }
     }
 
     public LayerMask TowerLayer;
+    public LayerMask DinoLayer;
 
     public void ChangeMoney(int change) {
         _money += change;

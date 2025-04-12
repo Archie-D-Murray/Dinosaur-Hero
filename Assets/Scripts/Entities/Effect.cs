@@ -19,7 +19,7 @@ namespace Entities {
         public static Effect Stun(float duration) {
             return new Effect(EffectType.Stun, 0.0f, duration, 0.0f);
         }
-        public static Effect Slow(float speedModifier, float duration, float tickRate) {
+        public static Effect Slow(float speedModifier, float duration) {
             return new Effect(EffectType.DoT, speedModifier, duration, 0.0f);
         }
 
@@ -57,6 +57,14 @@ namespace Entities {
 
         public bool Finished() {
             return _durationTimer.IsFinished;
+        }
+
+        public Effect Clone() {
+            return Type switch {
+                EffectType.DoT => Effect.DoT(Magnitude, Duration, TickRate),
+                EffectType.Slow => Effect.Slow(Magnitude, Duration),
+                _ => Effect.Stun(Duration),
+            };
         }
     }
 }

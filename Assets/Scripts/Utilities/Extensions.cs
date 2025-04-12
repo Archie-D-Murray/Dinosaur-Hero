@@ -142,4 +142,8 @@ public static class Extensions {
 
         return returnValue;
     }
+
+    public static bool Populated<T>(this T[] array) {
+        return array != null && array.Length > 0;
+    }
 }

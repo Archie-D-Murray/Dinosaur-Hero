@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 using Unity.Collections;
+using System;
 
 namespace Entities {
     public class EffectHandler : MonoBehaviour {
@@ -13,6 +14,10 @@ namespace Entities {
         public Health Health => _health;
         public bool Stunned = false;
         public float SpeedModifier = 1.0f;
+
+        public void Init(Health health) {
+            _health = health;
+        }
 
         public void AcceptEffect(Effect effect) {
             _effects.Add(effect);

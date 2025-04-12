@@ -8,6 +8,7 @@ using Utilities;
 using Entities.Dinos;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class DinoMenu : MonoBehaviour {
 
@@ -20,7 +21,10 @@ public class DinoMenu : MonoBehaviour {
     public void Start() {
         _menuGroup = GetComponent<CanvasGroup>();
         foreach (DinoData data in _data) {
-            Button buy = Instantiate(_dinoUIPrefab, _menuGroup.transform).GetComponent<Button>();
+            GameObject instance = Instantiate(_dinoUIPrefab, _menuGroup.transform);
+            Button buy = instance.GetComponentInChildren<Button>();
+            instance.GetComponentsInChildren<Image>().First(image => image.gameObject.HasComponent<Tags.UI.MenuImage>()).sprite = data.Icon;
+            instance.GetComponentInChildren<TMP_Text>().text = data.Cost.ToString();
             buy.onClick.AddListener(() => Globals.Instance.Buy(data.Cost, data.Type));
             _buttons.Add(data.Type, buy);
             _lookup.Add(data.Type, data);

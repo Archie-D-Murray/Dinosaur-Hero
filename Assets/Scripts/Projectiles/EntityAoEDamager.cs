@@ -6,16 +6,14 @@ using Entities.Towers;
 using UnityEngine;
 namespace ProjectileComponents {
     public class AoEEntityDamager : MonoBehaviour {
-        [SerializeField] private DamageFilter _filter;
         [SerializeField] private float _damage;
         [SerializeField] private float _range;
-        [SerializeField] private LayerMask _tower;
+        [SerializeField] private LayerMask _filter;
 
-        public void Init(DamageFilter filter, float damage, float range, LayerMask tower) {
-            _filter = filter;
+        public void Init(float damage, float range, LayerMask filter) {
             _damage = damage;
             _range = range;
-            _tower = tower;
+            _filter = filter;
         }
 
         private void OnTriggerEnter2D(Collider2D collision) {
@@ -27,7 +25,7 @@ namespace ProjectileComponents {
             if (!collision.gameObject.HasComponent<Tower>()) {
                 return;
             }
-            foreach (Collider2D collider in Physics2D.OverlapCircleAll(transform.position, _range, _tower)) {
+            foreach (Collider2D collider in Physics2D.OverlapCircleAll(transform.position, _range, _filter)) {
                 if (!collider.TryGetComponent(out Health health)) {
                     continue;
                 }

@@ -9,7 +9,6 @@ namespace Entities.Dinos {
         public GameObject Prefab;
         public int Cost;
         public Sprite Icon;
-
-        public Sprite Sprite { get; internal set; }
+        public Sprite Sprite;
     }
 }

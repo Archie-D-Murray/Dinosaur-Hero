@@ -318,6 +318,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _points: []
   _spawnDelay: 1
+  _queueUIPrefab: {fileID: 6706138372974868703, guid: 49064cd9556cc554883253bc184b1c3b, type: 3}
+  _queueObjectPrefab: {fileID: 1294745422063492212, guid: 1cb23f0800ba48c4f8cfb8a98997cb66, type: 3}
+  _progress: {fileID: 0}
 --- !u!58 &133341041
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1246,6 +1249,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _points: []
   _spawnDelay: 1
+  _queueUIPrefab: {fileID: 6706138372974868703, guid: 49064cd9556cc554883253bc184b1c3b, type: 3}
+  _queueObjectPrefab: {fileID: 1294745422063492212, guid: 1cb23f0800ba48c4f8cfb8a98997cb66, type: 3}
+  _progress: {fileID: 0}
 --- !u!212 &372137804
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2386,6 +2392,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _points: []
   _spawnDelay: 1
+  _queueUIPrefab: {fileID: 6706138372974868703, guid: 49064cd9556cc554883253bc184b1c3b, type: 3}
+  _queueObjectPrefab: {fileID: 1294745422063492212, guid: 1cb23f0800ba48c4f8cfb8a98997cb66, type: 3}
+  _progress: {fileID: 0}
 --- !u!58 &758659028
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -15293,7 +15302,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _respawnPrefab: {fileID: 1180909202295912825, guid: 71a875b96c6cf744496a52d98f2d7196, type: 3}
-  _worldSpaceUI: {fileID: 1854551568}
   _towers: []
   _respawnTime: 5
 --- !u!4 &1678834157
@@ -15724,6 +15732,7 @@ GameObject:
   - component: {fileID: 1854551567}
   - component: {fileID: 1854551566}
   - component: {fileID: 1854551565}
+  - component: {fileID: 1854551569}
   m_Layer: 5
   m_Name: World Space Canvas
   m_TagString: Untagged
@@ -15814,6 +15823,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 11.25}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1854551569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854551564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed00b87eda9b8c04086660b0d72b2cef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WorldCanvas: {fileID: 1854551568}
 --- !u!1 &1864913257
 GameObject:
   m_ObjectHideFlags: 0
@@ -17171,7 +17193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 495898350948721113, guid: 2c3e766d3d2dd664a80be6f22c940788, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.848601
+      value: -3.1513991
       objectReference: {fileID: 0}
     - target: {fileID: 495898350948721113, guid: 2c3e766d3d2dd664a80be6f22c940788, type: 3}
       propertyPath: m_LocalPosition.z
@@ -17208,6 +17230,10 @@ PrefabInstance:
     - target: {fileID: 796066637794478524, guid: 2c3e766d3d2dd664a80be6f22c940788, type: 3}
       propertyPath: m_Name
       value: Ice Age
+      objectReference: {fileID: 0}
+    - target: {fileID: 919505960378732389, guid: 2c3e766d3d2dd664a80be6f22c940788, type: 3}
+      propertyPath: _slow.Duration
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

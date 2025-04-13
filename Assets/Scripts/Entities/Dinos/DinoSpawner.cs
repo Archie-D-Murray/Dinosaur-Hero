@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 
+using UI;
+
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 using Utilities;
 
@@ -18,11 +21,16 @@ namespace Entities.Dinos {
         [SerializeField] private Transform[] _points;
         [SerializeField] float _spawnDelay = 1.0f;
 
+        [SerializeField] private GameObject _queueUIPrefab;
+        [SerializeField] private GameObject _queueObjectPrefab;
+
         private SpriteRenderer _hightlight;
         private Dictionary<DinoType, DinoData> _lookup = new Dictionary<DinoType, DinoData>();
         private Queue<DinoType> _spawnQueue = new Queue<DinoType>();
         private CountDownTimer _spawnTimer;
         private Coroutine _fade = null;
+        private Transform _queueUI;
+        [SerializeField] private Image _progress;
 
         private void Start() {
             foreach (DinoData data in Assets.Instance.DinoData) {
@@ -34,12 +42,23 @@ namespace Entities.Dinos {
             }
             _spawnTimer = new CountDownTimer(_spawnDelay);
             _hightlight = GetComponent<SpriteRenderer>();
+            _queueUI = Instantiate(_queueUIPrefab, UIManager.Instance.WorldCanvas).transform;
+            _queueUI.transform.position = transform.position + Vector3.up;
+            _queueUI = _queueUI.GetChild(0);
         }
 
         private void FixedUpdate() {
             _spawnTimer.Update(Time.fixedDeltaTime);
+            if (_progress) {
+                _progress.fillAmount = _spawnTimer.Progress();
+            } else {
+                if (_queueUI.childCount > 0) {
+                    _progress = _queueUI.GetChild(0).GetComponent<Image>();
+                }
+            }
             if (_spawnTimer.IsFinished && _spawnQueue.Count > 0) {
                 Spawn(_spawnQueue.Dequeue());
+                Destroy(_queueUI.GetChild(0).gameObject);
                 _spawnTimer.Reset(_spawnDelay);
             }
         }
@@ -51,6 +70,7 @@ namespace Entities.Dinos {
 
         public void QueueSpawn(DinoType type) {
             _spawnQueue.Enqueue(type);
+            Instantiate(_queueObjectPrefab, _queueUI).GetComponent<Image>().sprite = _lookup[type].Sprite;
         }
 
         public void OnPointerEnter(PointerEventData eventData) {

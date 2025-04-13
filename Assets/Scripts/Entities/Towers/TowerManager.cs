@@ -6,10 +6,11 @@ using UnityEngine;
 
 using Utilities;
 
+using UI;
+
 namespace Entities.Towers {
     public class TowerManager : Singleton<TowerManager> {
         [SerializeField] private GameObject _respawnPrefab;
-        [SerializeField] private Transform _worldSpaceUI;
         [SerializeField] private List<Tower> _towers = new List<Tower>();
         [SerializeField] private float _respawnTime = 5.0f;
 
@@ -22,7 +23,7 @@ namespace Entities.Towers {
         }
 
         public void OnTowerDestroy(Tower tower) {
-            GameObject respawn = Instantiate(_respawnPrefab, _worldSpaceUI);
+            GameObject respawn = Instantiate(_respawnPrefab, UIManager.Instance.WorldCanvas);
             respawn.transform.SetPositionAndRotation(tower.transform.position, Quaternion.identity);
             respawn.GetComponent<TowerRespawn>().Init(tower.Type, _respawnTime);
             _towers.RemoveSwapBack(tower);

@@ -26,6 +26,7 @@ namespace Entities.Dinos {
         private void FixedUpdate() {
             if (Move && _points != null) {
                 _target = TravelPath();
+                transform.rotation = Helpers.Look2D(_rb2D.position, _target);
                 _rb2D.MovePosition(TravelPath());
             }
         }

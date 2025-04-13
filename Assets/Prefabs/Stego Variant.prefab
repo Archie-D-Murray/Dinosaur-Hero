@@ -106,6 +106,7 @@ MonoBehaviour:
   _speed: 5
   _attackTime: 5
   _attackFrame: 0.5
+  _attackAnimationLength: 0
   _animatorSpeed: 1
   _attackTimer:
     _initialTime: 0
@@ -214,6 +215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af3da2c9329d51854a9e7e2f23e0ba61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _particleManagers: []
+  _effects: []
   Stunned: 0
   SpeedModifier: 1
 --- !u!114 &6714199866067162159

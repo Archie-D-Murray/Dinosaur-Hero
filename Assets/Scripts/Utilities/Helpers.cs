@@ -47,7 +47,7 @@ namespace Utilities {
             _mousePosition = GetWorldMousePosition();
         }
 
-        public static Quaternion Look2D(Vector3 from, Vector3 to) {
+        public static Quaternion Look2D(Vector2 from, Vector2 to) {
             return Quaternion.AngleAxis(Vector2.SignedAngle(Vector2.up, (to - from).normalized), Vector3.forward);
         }
 

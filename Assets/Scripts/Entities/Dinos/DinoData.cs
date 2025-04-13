@@ -11,5 +11,6 @@ namespace Entities.Dinos {
         public Sprite Icon;
         public Sprite Sprite;
         public string Name;
+        public string Description;
     }
 }

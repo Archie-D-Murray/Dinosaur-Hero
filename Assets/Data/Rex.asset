@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   Prefab: {fileID: 9182093122309563720, guid: adb022c5cdceebedc99b1c36a6046f6b, type: 3}
-  Cost: 200
+  Cost: 100
   Icon: {fileID: 7061260028621710027, guid: ddda08a000d03eb8e9da2e135e245bfc, type: 3}
   Sprite: {fileID: 7061260028621710027, guid: ddda08a000d03eb8e9da2e135e245bfc, type: 3}
+  Name: Rex
+  Description: Ramping attack speed

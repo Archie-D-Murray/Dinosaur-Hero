@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 2
   Prefab: {fileID: 8620175789048450551, guid: 56aad702a038f354a8009f23e26bec88, type: 3}
-  Cost: 200
+  Cost: 125
   Icon: {fileID: 7061260028621710027, guid: 401f527e8ff1dcd47814613dd572ca83, type: 3}
   Sprite: {fileID: 7061260028621710027, guid: 401f527e8ff1dcd47814613dd572ca83, type: 3}
+  Name: Stegosaurus
+  Description: High durability + Reflects incoming damage

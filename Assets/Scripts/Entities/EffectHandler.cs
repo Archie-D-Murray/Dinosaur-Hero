@@ -27,6 +27,12 @@ namespace Entities {
                 Timer.OnTimerStart += Particles.Play;
                 Timer.OnTimerStop += Particles.Stop;
             }
+
+            public void AddToTimer(float duration) {
+                if (Timer.RemainingTime < duration) {
+                    Timer.Reset(duration);
+                }
+            }
         }
 
         [SerializeField] private ParticleManager[] _particleManagers;
@@ -53,8 +59,8 @@ namespace Entities {
         public void ApplyEffect(Effect effect) {
             _effects.Add(effect);
             _effects.Last().Init();
-            if (_lookup[effect.Type].Timer.RemainingTime < effect.Duration) {
-                _lookup[effect.Type].Timer.Reset(effect.Duration);
+            if (_lookup.TryGetValue(effect.Type, out ParticleManager manager)) {
+                manager.AddToTimer(effect.Duration);
             }
         }
 

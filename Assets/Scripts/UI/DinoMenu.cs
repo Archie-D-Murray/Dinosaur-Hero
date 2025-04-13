@@ -10,73 +10,77 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using TMPro;
 using Tags.UI;
+using System;
+namespace UI {
 
-public class DinoMenu : MonoBehaviour {
+    public class StorageUI : MonoBehaviour {
 
-    [SerializeField] private CanvasGroup _canvas;
-    [SerializeField] private GameObject _dinoBuyPrefab;
-    [SerializeField] private GameObject _dinoStoragePrefab;
-    [SerializeField] private Dictionary<DinoType, Button> _buttons = new Dictionary<DinoType, Button>();
-    [SerializeField] private Dictionary<DinoType, TMP_Text> _storage = new Dictionary<DinoType, TMP_Text>();
-    [SerializeField] private Dictionary<DinoType, DinoData> _lookup = new Dictionary<DinoType, DinoData>();
-    [SerializeField] private Transform _storageRoot;
-    [SerializeField] private Transform _buyRoot;
+        [SerializeField] private CanvasFader _fader;
+        [SerializeField] private GameObject _dinoBuyPrefab;
+        [SerializeField] private GameObject _dinoStoragePrefab;
+        [SerializeField] private Dictionary<DinoType, Button> _buttons = new Dictionary<DinoType, Button>();
+        [SerializeField] private Dictionary<DinoType, TMP_Text> _storage = new Dictionary<DinoType, TMP_Text>();
+        [SerializeField] private Dictionary<DinoType, DinoData> _lookup = new Dictionary<DinoType, DinoData>();
+        [SerializeField] private Transform _storageRoot;
+        [SerializeField] private Transform _buyRoot;
+        [SerializeField] private TMP_Text _moneyReadout;
+        [SerializeField] private Button _close;
+        [SerializeField] private Button _open;
 
-    public void Start() {
-        _canvas = GetComponent<CanvasGroup>();
-        foreach (DinoData data in Assets.Instance.DinoData) {
-            GameObject buySlot = Instantiate(_dinoBuyPrefab, _buyRoot);
-            Button buy = buySlot.GetComponentInChildren<Button>();
-            buySlot.GetComponentsInChildren<Image>().First(image => image.gameObject.HasComponent<IconTag>()).sprite = data.Sprite;
-            foreach (TMP_Text text in buySlot.GetComponentsInChildren<TMP_Text>()) {
-                if (text.gameObject.HasComponent<ReadoutTag>()) {
-                    text.text = data.Name;
+        public void Start() {
+            _fader = GetComponent<CanvasFader>();
+            _close = GetComponentInChildren<Button>();
+            _moneyReadout = GetComponentInChildren<ReadoutTag>().GetComponent<TMP_Text>();
+            foreach (DinoData data in Assets.Instance.DinoData) {
+                GameObject buySlot = Instantiate(_dinoBuyPrefab, _buyRoot);
+                Button buy = buySlot.GetComponentInChildren<Button>();
+                buySlot.GetComponentsInChildren<Image>().First(image => image.gameObject.HasComponent<IconTag>()).sprite = data.Sprite;
+                foreach (TMP_Text text in buySlot.GetComponentsInChildren<TMP_Text>()) {
+                    if (text.gameObject.HasComponent<ReadoutTag>()) {
+                        text.text = data.Name;
+                    }
+                    if (text.gameObject.HasComponent<PriceTag>()) {
+                        text.text = $"Cost: {data.Cost}";
+                    }
                 }
-                if (text.gameObject.HasComponent<PriceTag>()) {
-                    text.text = data.Cost.ToString();
-                }
+                buy.onClick.AddListener(() => Globals.Instance.Buy(data.Cost, data.Type));
+                buy.onClick.AddListener(CheckCosts);
+                _buttons.Add(data.Type, buy);
+                _lookup.Add(data.Type, data);
+
+                GameObject storageSlot = Instantiate(_dinoStoragePrefab, _storageRoot);
+                storageSlot.GetComponentsInChildren<Image>().First(image => image.gameObject.HasComponent<IconTag>()).sprite = data.Icon;
+                TMP_Text counter = storageSlot.GetComponentInChildren<TMP_Text>();
+                counter.text = $"x{Globals.Instance.Storage(data.Type).Count}";
+                _storage.Add(data.Type, counter);
             }
-            buy.onClick.AddListener(() => Globals.Instance.Buy(data.Cost, data.Type));
-            _buttons.Add(data.Type, buy);
-            _lookup.Add(data.Type, data);
-
-            GameObject storageSlot = Instantiate(_dinoStoragePrefab, _storageRoot);
-            storageSlot.GetComponentsInChildren<Image>().First(image => image.gameObject.HasComponent<IconTag>()).sprite = data.Icon;
-            TMP_Text counter = storageSlot.GetComponentInChildren<TMP_Text>();
-            counter.text = $"x{Globals.Instance.Storage(data.Type).Count}";
-            _storage.Add(data.Type, counter);
-        }
-        CheckCosts();
-    }
-
-    public void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape) || (Input.GetKeyDown(KeyCode.Tab) && _canvas.interactable)) {
-            Hide();
-            return;
-        }
-        if (Input.GetKeyDown(KeyCode.Tab) && !_canvas.interactable) {
+            UpdateMoney(Globals.Instance.Money);
+            Globals.Instance.OnMoneyChange += UpdateMoney;
             CheckCosts();
-            Show();
-            return;
+            _close.onClick.AddListener(Hide);
         }
-    }
 
-    public void Show() {
-        CheckCosts();
-        _canvas.FadeCanvas(1f, false, this);
-    }
-
-    public void CheckCosts() {
-        foreach (KeyValuePair<DinoType, Button> kvp in _buttons) {
-            kvp.Value.interactable = _lookup[kvp.Key].Cost <= Globals.Instance.Money;
+        private void UpdateMoney(int money) {
+            _moneyReadout.text = $"Money: {money}";
         }
-        foreach (KeyValuePair<DinoType, TMP_Text> kvp in _storage) {
-            kvp.Value.text = $"x{Globals.Instance.Storage(kvp.Key).Count}";
-        }
-    }
 
-    public void Hide() {
-        EventSystem.current.SetSelectedGameObject(null);
-        _canvas.FadeCanvas(1f, true, this);
+        public void Toggle() {
+            CheckCosts();
+            _fader.Toggle();
+        }
+
+        public void CheckCosts() {
+            foreach (KeyValuePair<DinoType, Button> kvp in _buttons) {
+                kvp.Value.interactable = _lookup[kvp.Key].Cost <= Globals.Instance.Money;
+            }
+            foreach (KeyValuePair<DinoType, TMP_Text> kvp in _storage) {
+                kvp.Value.text = $"x{Globals.Instance.Storage(kvp.Key).Count}";
+            }
+        }
+
+        public void Hide() {
+            EventSystem.current.SetSelectedGameObject(null);
+            _fader.Hide();
+        }
     }
 }

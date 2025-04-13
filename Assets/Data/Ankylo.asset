@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 1
   Prefab: {fileID: 2664037892851013334, guid: 534dad6fc4535494db5aab0c57c019f7, type: 3}
-  Cost: 250
+  Cost: 75
   Icon: {fileID: 7061260028621710027, guid: 6f88768fb6accc940a3a6f3ebb104ff0, type: 3}
   Sprite: {fileID: 7061260028621710027, guid: 6f88768fb6accc940a3a6f3ebb104ff0, type: 3}
+  Name: Ankylosaurus
+  Description: Heavy AoE hits + Durability

@@ -50,6 +50,7 @@ namespace Entities.Towers {
         protected Collider2D _collider;
         protected SpriteRenderer _renderer;
         protected Material _material;
+        protected EffectHandler _handler;
 
         public TowerType Type => _type;
 
@@ -64,12 +65,12 @@ namespace Entities.Towers {
             _health = GetComponent<Health>();
             _collider = GetComponent<Collider2D>();
             _renderer = GetComponent<SpriteRenderer>();
+            _handler = GetComponent<EffectHandler>();
             _material = _renderer.material;
             _health.OnDeath += () => {
                 TowerManager.Instance.OnTowerDestroy(this);
                 _canShoot = false;
                 _collider.enabled = false;
-                // Instantiate(Assets.Instance.TowerDeathParticles, transform.position, transform.rotation);
                 Destroy(gameObject, _emitter.Length(SoundEffectType.Death));
                 enabled = false;
             };
@@ -79,6 +80,7 @@ namespace Entities.Towers {
                 Instantiate(Assets.Instance.GetTowerParticles(_type), transform.position, Quaternion.identity);
             };
             _health.SetMaxHealth(_maxHealth);
+            _handler.Init(_health);
             _timers.Add(_attackTimer);
             _timers.Add(_attackFrameTimer);
             AddTimer();

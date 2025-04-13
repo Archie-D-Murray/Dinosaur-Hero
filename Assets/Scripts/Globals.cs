@@ -25,6 +25,7 @@ public class Globals : Singleton<Globals> {
     private Dictionary<DinoType, int> _lookup = new Dictionary<DinoType, int>();
 
     public int Money => _money;
+    public Action<int> OnMoneyChange;
     public DinoStorage Storage(DinoType type) => _storage[_lookup[type]];
 
     protected override void Awake() {
@@ -48,6 +49,7 @@ public class Globals : Singleton<Globals> {
 
     public void ChangeMoney(int change) {
         _money += change;
+        OnMoneyChange?.Invoke(_money);
     }
 
     public void Buy(int cost, DinoType type) {

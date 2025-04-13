@@ -4,6 +4,7 @@ using Entities;
 using Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Entities.Dinos {
 
@@ -47,6 +48,8 @@ namespace Entities.Dinos {
         protected EffectHandler _handler;
         protected int _currentAnimation;
         protected Animator _animator;
+        protected SpriteRenderer _renderer;
+        protected Material _material;
 
         protected virtual void Start() {
             _health = GetComponent<Health>();
@@ -54,14 +57,21 @@ namespace Entities.Dinos {
             _handler = GetComponent<EffectHandler>();
             _agent = GetComponent<DinoPathAgent>();
             _animator = GetComponent<Animator>();
+            _renderer = GetComponent<SpriteRenderer>();
+            _material = _renderer.material;
             _animations = InitAnimations();
             _handler.Init(_health);
             _health.SetMaxHealth(_maxHealth);
+            _health.OnDamage += OnDamage;
             AddTimer(_attackTimer);
             AddTimer(_attackFrameTimer);
             _attackTimer.OnTimerStop += ResetAnimatorSpeed;
-            _attackAnimationLength = _animator.runtimeAnimatorController.animationClips
-                .First(clip => Animator.StringToHash(clip.name) == _animations.Attack).length;
+            _attackAnimationLength = _animator.GetRuntimeClip(_animations.Attack).length;
+        }
+
+        private void OnDamage(float damage, GameObject source) {
+            _renderer.FlashDamage(Assets.Instance.DamageFlash, _material, 0.25f, this);
+            Instantiate(Assets.Instance.DinoHitParticles, transform.position, Quaternion.identity);
         }
 
         protected virtual Collider2D[] GetTargets() {

@@ -51,6 +51,7 @@ namespace Utilities {
             }
         }
 
+        public float RemainingTime => _time;
         public bool IsFinished => _time == 0f;
         public void Reset() => _time = _initialTime;
         public void Reset(float newTime, bool startTimer = true) {

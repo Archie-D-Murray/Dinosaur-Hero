@@ -12,6 +12,10 @@ namespace Entities.Towers {
             return new TowerAnimations("Dust_Storm");
         }
 
+        protected override TowerType InitType() {
+            return TowerType.Dust;
+        }
+
         public override void Shoot(Collider2D[] colliders) {
             _attackTimer.Reset(_attackTime);
             GameObject projectile = Instantiate(_projectile, transform.position, Helpers.Look2D(transform.position, GetClosest(colliders).transform.position));

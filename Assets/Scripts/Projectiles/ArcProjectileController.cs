@@ -9,12 +9,14 @@ namespace ProjectileComponents {
 
         [SerializeField] private float _speed;
         [SerializeField] private Transform _target;
-        [SerializeField] private Vector3 _linearPosition;
-        [SerializeField] private Vector3 _initialPosition;
-        [SerializeField] private Vector3 _targetPosition;
+        [SerializeField] private Vector2 _linearPosition;
+        [SerializeField] private Vector2 _initialPosition;
+        [SerializeField] private Vector2 _targetPosition;
         [SerializeField] private float _progress = 0f;
         [SerializeField] private float _height;
         [SerializeField] private Rigidbody2D _rb2D;
+
+        [SerializeField] private bool _move = false;
 
         private void Awake() {
             _rb2D = GetComponent<Rigidbody2D>();
@@ -26,20 +28,26 @@ namespace ProjectileComponents {
             _height = height;
             _linearPosition = transform.position;
             _initialPosition = transform.position;
+            _move = true;
         }
 
         public void FixedUpdate() {
             if (_target) {
-                _targetPosition = _target.position;
+                if (Vector2.Distance(_targetPosition, _target.position) >= 0.1f) {
+                    _targetPosition = _target.position;
+                    _speed += 2.0f * Vector2.Distance(_targetPosition, _target.position);
+                }
             }
-            if (Vector2.Distance(_targetPosition, transform.position) <= 0.2f) {
-                Destroy(gameObject);
-            } else {
-                // TODO: Fix this to use an arc
+            if (_move) {
                 _progress = Mathf.Clamp01(Vector2.Distance(_linearPosition, _targetPosition) / Vector2.Distance(_initialPosition, _targetPosition));
-                _linearPosition = Vector3.MoveTowards(_linearPosition, _targetPosition, Time.fixedDeltaTime * _speed);
-                _rb2D.MovePosition(_linearPosition + _height * Mathf.Sin(_progress * Mathf.PI) * Vector3.up);
+                _linearPosition = Vector2.MoveTowards(_linearPosition, _targetPosition, Time.fixedDeltaTime * _speed);
+                _rb2D.MovePosition(_linearPosition + _height * Mathf.Sin(_progress * Mathf.PI) * Vector2.up);
             }
+        }
+
+        private void OnTriggerEnter2D(Collider2D collider) {
+            _move = false;
+            Debug.Log("Move stopped by" + collider.name);
         }
     }
 }

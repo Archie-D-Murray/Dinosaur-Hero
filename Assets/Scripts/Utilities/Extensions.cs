@@ -164,4 +164,8 @@ public static class Extensions {
     public static Color WithAlpha(this Color colour, float alpha = 0.0f) {
         return new Color(colour.r, colour.g, colour.b, alpha);
     }
+
+    public static AnimationClip GetRuntimeClip(this Animator animator, int hash) {
+        return animator.runtimeAnimatorController.OrNull()?.animationClips.FirstOrDefault(clip => Animator.StringToHash(clip.name) == hash) ?? null;
+    }
 }

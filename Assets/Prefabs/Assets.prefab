@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8890275606248263070
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7554702700165581167}
+  - component: {fileID: 3303782373157206717}
+  m_Layer: 0
+  m_Name: Assets
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7554702700165581167
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8890275606248263070}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.60417247, y: 0.11308691, z: -0.026988946}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3303782373157206717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8890275606248263070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aa2ca2aeefaa594980f1d301938d6fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DinoHitParticles: {fileID: 982080015274403592, guid: 6302581201efebb44a3253f83c7d998c, type: 3}
+  TowerParticlesData:
+  - Type: 0
+    Particles: {fileID: 2650981813754165054, guid: e64cf33fe39ffc74397d81c416b0ccf5, type: 3}
+  - Type: 1
+    Particles: {fileID: 8355750303527862904, guid: f73287bfa8d8c2340b16ac8e1318f8bc, type: 3}
+  - Type: 2
+    Particles: {fileID: 317012365345347685, guid: 6ad17cc5ab09f844e9178f3394fecf9c, type: 3}
+  - Type: 3
+    Particles: {fileID: 6342311825633003360, guid: e0364bddd8db7864f8e5a42fe278d7a7, type: 3}
+  DamageFlash: {fileID: 2100000, guid: 5f20cd7f48dcd864faa093161420b8d2, type: 2}
+  DinoData:
+  - {fileID: 11400000, guid: 7ecf6966da38e1f40a0e49a9c1a00646, type: 2}
+  - {fileID: 11400000, guid: 5d0ea1b0eba6efe4c910258742df2d21, type: 2}
+  - {fileID: 11400000, guid: 6a8e9bfc1d03ee2d28adc9821bb7c98c, type: 2}
+  TowerData:
+  - {fileID: 11400000, guid: bd44e9202a1fbbe429f105d8ddcd84b1, type: 2}
+  - {fileID: 11400000, guid: 19e746c5e2d455f4d91d5b0a126af667, type: 2}
+  - {fileID: 11400000, guid: 610dda1168904ce4ebac30c82c8c9d64, type: 2}
+  - {fileID: 11400000, guid: ad5b4ed4ebb534845b0167940023c830, type: 2}

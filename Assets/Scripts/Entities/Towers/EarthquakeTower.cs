@@ -14,6 +14,10 @@ namespace Entities.Towers {
             return new TowerAnimations("Earthquake");
         }
 
+        protected override TowerType InitType() {
+            return TowerType.Earthquake;
+        }
+
         public override void Shoot(Collider2D[] colliders) {
             Collider2D target = colliders.Closest(transform.position);
             GameObject projectile = Instantiate(_projectile, target.transform.position, Quaternion.identity);

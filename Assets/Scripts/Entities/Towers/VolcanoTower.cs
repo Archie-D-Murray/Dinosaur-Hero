@@ -14,6 +14,10 @@ namespace Entities.Towers {
             return new TowerAnimations("Volcano");
         }
 
+        protected override TowerType InitType() {
+            return TowerType.Volcano;
+        }
+
         public override void Shoot(Collider2D[] colliders) {
             Collider2D target = colliders.Closest(transform.position);
             GameObject projectile = Instantiate(_projectile, transform.position, Helpers.Look2D(transform.position, target.transform.position));

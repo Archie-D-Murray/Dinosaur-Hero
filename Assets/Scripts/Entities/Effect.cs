@@ -1,9 +1,12 @@
+using System;
+
 using Utilities;
 
 namespace Entities {
 
     public enum EffectType { DoT, Slow, Stun }
 
+    [Serializable]
     public class Effect {
         public float Magnitude = 1.0f;
         public float Duration = 1.0f;
@@ -20,7 +23,7 @@ namespace Entities {
             return new Effect(EffectType.Stun, 0.0f, duration, 0.0f);
         }
         public static Effect Slow(float speedModifier, float duration) {
-            return new Effect(EffectType.DoT, speedModifier, duration, 0.0f);
+            return new Effect(EffectType.Slow, speedModifier, duration, 0.0f);
         }
 
         private Effect(EffectType type, float magnitude, float duration, float tickRate) {

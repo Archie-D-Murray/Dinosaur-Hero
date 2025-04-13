@@ -7,6 +7,9 @@ using Utilities;
 namespace UI {
     [RequireComponent(typeof(CanvasGroup))]
     public class CanvasFader : MonoBehaviour {
+
+        private Coroutine _fade = null;
+
         [SerializeField] private float _fadeSpeed = 2.0f;
         [SerializeField] private bool _showOnStart = false;
         [SerializeField] private bool _fadeOnStart = false;
@@ -19,7 +22,7 @@ namespace UI {
                 if (_showOnStart) {
                     _canvas.alpha = 0.0f;
                 }
-                _canvas.FadeCanvas(_fadeSpeed, !_showOnStart, this);
+                _fade = _canvas.FadeCanvasC(_fadeSpeed, !_showOnStart, this);
             } else {
                 _canvas.alpha = _showOnStart ? 1.0f : 0.0f;
                 _canvas.interactable = _showOnStart;
@@ -28,11 +31,17 @@ namespace UI {
         }
 
         public void Show() {
-            _canvas.FadeCanvas(_fadeSpeed, false, this);
+            if (_fade != null) {
+                StopCoroutine(_fade);
+            }
+            _fade = _canvas.FadeCanvasC(_fadeSpeed, false, this);
         }
 
         public void Hide() {
-            _canvas.FadeCanvas(_fadeSpeed, true, this);
+            if (_fade != null) {
+                StopCoroutine(_fade);
+            }
+            _fade = _canvas.FadeCanvasC(_fadeSpeed, true, this);
         }
 
         public void Toggle() {

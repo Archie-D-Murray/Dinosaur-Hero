@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Entities.Dinos;
 
@@ -12,9 +13,9 @@ public class DinoStorage {
     public DinoType Type;
     public int Count = 0;
 
-    public DinoStorage(DinoType type) {
+    public DinoStorage(DinoType type, int count = 0) {
         Type = type;
-        Count = 0;
+        Count = count;
     }
 }
 
@@ -25,17 +26,13 @@ public class Globals : Singleton<Globals> {
     private Dictionary<DinoType, int> _lookup = new Dictionary<DinoType, int>();
 
     public int Money => _money;
+    public int StorageCount => _storage.Length;
     public Action<int> OnMoneyChange;
     public DinoStorage Storage(DinoType type) => _storage[_lookup[type]];
 
     protected override void Awake() {
         base.Awake();
-        Array values = Enum.GetValues(typeof(DinoType));
-        _storage = new DinoStorage[values.Length];
-        for (int i = 0; i < values.Length; i++) {
-            _storage[i] = new DinoStorage((DinoType)values.GetValue(i));
-            _lookup.Add(_storage[i].Type, i);
-        }
+        InitStorage();
         if (TowerLayer == 0) {
             TowerLayer = 1 << LayerMask.NameToLayer("Tower");
         }
@@ -52,8 +49,29 @@ public class Globals : Singleton<Globals> {
         OnMoneyChange?.Invoke(_money);
     }
 
+    public bool Empty() {
+        return _storage.Sum(storage => storage.Count) == 0;
+    }
+
     public void Buy(int cost, DinoType type) {
         ChangeMoney(-cost);
         Storage(type).Count++;
+    }
+
+    public void Reset(int initialMoney, DinoStorage[] storage) {
+        _money = initialMoney;
+        for (int i = 0; i < storage.Length; i++) {
+            _storage[i] = new DinoStorage(storage[i].Type, storage[i].Count);
+        }
+    }
+
+    public void InitStorage() {
+        _lookup.Clear();
+        DinoType[] values = Enum.GetValues(typeof(DinoType)).Cast<DinoType>().ToArray();
+        _storage = new DinoStorage[values.Length];
+        for (int i = 0; i < values.Length; i++) {
+            _storage[i] = new DinoStorage(values[i]);
+            _lookup.Add(_storage[i].Type, i);
+        }
     }
 }

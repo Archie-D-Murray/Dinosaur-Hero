@@ -13,6 +13,7 @@ namespace Entities {
         public float TickRate = 0.0f;
         public EffectType Type;
 
+        private bool _init = false;
         private CountDownTimer _durationTimer;
         private CountDownTimer _tickTimer;
 
@@ -35,7 +36,10 @@ namespace Entities {
 
         public void Init() {
             _durationTimer = new CountDownTimer(Duration);
-            _tickTimer = new CountDownTimer(0.0f);
+            _tickTimer = new CountDownTimer(TickRate);
+            _durationTimer.Start();
+            _tickTimer.Start();
+            _init = true;
         }
 
         public void Update(float dt, EffectHandler handler) {
@@ -59,6 +63,7 @@ namespace Entities {
         }
 
         public bool Finished() {
+            if (!_init) { return false; }
             return _durationTimer.IsFinished;
         }
 

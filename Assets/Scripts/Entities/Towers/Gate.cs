@@ -45,6 +45,8 @@ namespace Entities.Towers {
 
         private void OnDeath() {
             _collider.enabled = false;
+            TowerManager.Instance.DisableAllTowers();
+            GameManager.Instance.OnWin?.Invoke();
             Destroy(gameObject, 0.5f);
         }
     }

@@ -93,7 +93,7 @@ namespace Entities.Dinos {
 
         private void FixedUpdate() {
             _agent.Speed = _speed * _handler.SpeedModifier;
-            _agent.Move = !_handler.Stunned || !_attackTimer.IsRunning;
+            _agent.Move = !_handler.Stunned && !_attackTimer.IsRunning;
             foreach (Timer timer in _timers) {
                 timer.Update(Time.fixedDeltaTime);
             }

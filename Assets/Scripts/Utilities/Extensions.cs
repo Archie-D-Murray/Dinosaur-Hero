@@ -96,6 +96,10 @@ public static class Extensions {
         monoBehaviour.StartCoroutine(CanvasFade(canvasGroup, fadeSpeed, fadeToTransparent, debug));
     }
 
+    public static Coroutine FadeCanvasC(this CanvasGroup canvasGroup, float fadeSpeed, bool fadeToTransparent, MonoBehaviour monoBehaviour, bool debug = false) {
+        return monoBehaviour.StartCoroutine(CanvasFade(canvasGroup, fadeSpeed, fadeToTransparent, debug));
+    }
+
     private static IEnumerator CanvasFade(CanvasGroup canvasGroup, float fadeSpeed, bool fadeToTransparent, bool debug) {
         float target = fadeToTransparent ? 0.0f : 1.0f;
         float deltaTime = 0;

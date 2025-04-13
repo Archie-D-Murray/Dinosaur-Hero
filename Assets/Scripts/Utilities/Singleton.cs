@@ -16,6 +16,7 @@ namespace Utilities {
                         GameObject obj = new GameObject();
                         obj.name = $"{typeof(T).Name} - AutoCreated";
                         _internalInstance = obj.AddComponent<T>();
+                        (_internalInstance as Singleton<T>).OnAutoCreate();
                     }
                 }
 
@@ -30,9 +31,12 @@ namespace Utilities {
                     GameObject obj = new GameObject();
                     obj.name = $"{typeof(T).Name} - AutoCreated";
                     _internalInstance = obj.AddComponent<T>();
+                    (_internalInstance as Singleton<T>).OnAutoCreate();
                 }
             }
         }
+
+        protected virtual void OnAutoCreate() { }
 
         protected virtual void Awake() => InitialiseSingleton();
 

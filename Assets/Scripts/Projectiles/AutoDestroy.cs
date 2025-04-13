@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace ProjectileComponents {
 
+    [DefaultExecutionOrder(99)]
     public class AutoDestroy : MonoBehaviour {
         public float Duration;
 
@@ -10,7 +11,7 @@ namespace ProjectileComponents {
         }
 
         public void OnTriggerEnter2D(Collider2D collider) {
-            Destroy(collider, 0.1f);
+            Destroy(gameObject);
         }
     }
 }

@@ -8,6 +8,10 @@ namespace Entities.Towers {
     public class DustTower : Tower {
         [SerializeField] private float _stunDuration;
 
+        protected override TowerAnimations InitAnimations() {
+            return new TowerAnimations("Dust_Storm");
+        }
+
         public override void Shoot(Collider2D[] colliders) {
             _attackTimer.Reset(_attackTime);
             GameObject projectile = Instantiate(_projectile, transform.position, Helpers.Look2D(transform.position, GetClosest(colliders).transform.position));

@@ -8,7 +8,7 @@ namespace ProjectileComponents {
     public class EffectApplicator : MonoBehaviour {
         [SerializeField] private Effect[] _effects;
 
-        public void Init(Effect effect) {
+        public void Init(GameObject source, Effect effect) {
             _effects = new Effect[1];
             _effects[0] = effect.Clone();
         }
@@ -27,7 +27,7 @@ namespace ProjectileComponents {
 
             if (collision.TryGetComponent(out EffectHandler handler)) {
                 foreach (Effect effect in _effects) {
-                    handler.AcceptEffect(effect);
+                    handler.ApplyEffect(effect);
                     Debug.Log($"Applied effect: {effect.Type} to {collision.name}");
                 }
                 // Instantiate(Assets.Instance.HitParticles, transform.position, Quaternion.LookRotation(-transform.up));

@@ -12,13 +12,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rex Variant
       objectReference: {fileID: 0}
+    - target: {fileID: -2253911629886400664, guid: ddda08a000d03eb8e9da2e135e245bfc, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: ddda08a000d03eb8e9da2e135e245bfc, type: 3}
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: ddda08a000d03eb8e9da2e135e245bfc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: ddda08a000d03eb8e9da2e135e245bfc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -69,6 +73,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: ddda08a000d03eb8e9da2e135e245bfc, type: 3}
       insertIndex: -1
       addedObject: {fileID: -3469009971586863536}
+    - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: ddda08a000d03eb8e9da2e135e245bfc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7102757384035008251}
+    - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: ddda08a000d03eb8e9da2e135e245bfc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3732345325700530510}
+    - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: ddda08a000d03eb8e9da2e135e245bfc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8618194705956246978}
   m_SourcePrefab: {fileID: -8435245712485981826, guid: ddda08a000d03eb8e9da2e135e245bfc, type: 3}
 --- !u!1 &9182093122309563720 stripped
 GameObject:
@@ -87,11 +100,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a4d9ea5de6c12d14bdf3c7a33951276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackRadius: 5
+  _maxHealth: 100
+  _attackRadius: 2.5
   _damage: 3
   _speed: 5
-  _attackTime: 5
+  _attackTime: 1.5
   _attackFrame: 0.5
+  _animatorSpeed: 1
+  _attackTimer:
+    _initialTime: 0
+    _time: 0
+  _attackFrameTimer:
+    _initialTime: 0
+    _time: 0
   _stackTime: 1.5
   _attackSpeedMultiplier: 0.1
   _maxStacks: 5
@@ -152,15 +173,15 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.08}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
-    oldSize: {x: 0.16, y: 0.16}
-    newSize: {x: 0.16, y: 0.16}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -168,3 +189,49 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.16, y: 0.16}
   m_EdgeRadius: 0
+--- !u!114 &7102757384035008251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9182093122309563720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1259f6adf644b1b4fbdd8a70c58240c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentHealth: 0
+  _maxHealth: 100
+  _damageMultiplier: 1
+--- !u!114 &3732345325700530510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9182093122309563720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af3da2c9329d51854a9e7e2f23e0ba61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Stunned: 0
+  SpeedModifier: 1
+--- !u!114 &8618194705956246978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9182093122309563720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc69c64af9d436c9c9a216955706813d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _points: []
+  Speed: 0
+  Move: 1
+  _index: 0
+  _target: {x: 0, y: 0}

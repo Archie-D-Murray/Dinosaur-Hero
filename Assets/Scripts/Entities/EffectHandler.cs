@@ -19,7 +19,7 @@ namespace Entities {
             _health = health;
         }
 
-        public void AcceptEffect(Effect effect) {
+        public void ApplyEffect(Effect effect) {
             _effects.Add(effect);
             _effects.Last().Init();
         }

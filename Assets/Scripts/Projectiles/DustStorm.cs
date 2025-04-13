@@ -14,7 +14,7 @@ namespace ProjectileComponents {
             if (collider.TryGetComponent(out EffectHandler effectHandler)) {
                 if (_effected.Contains(effectHandler)) { return; }
                 _effected.Add(effectHandler);
-                effectHandler.AcceptEffect(Effect.Stun(StunDuration));
+                effectHandler.ApplyEffect(Effect.Stun(StunDuration));
             }
         }
 

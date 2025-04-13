@@ -68,7 +68,7 @@ public static class Extensions {
         monoBehaviour.StartCoroutine(Fade(spriteRenderer, original, target, duration));
     }
 
-    private static IEnumerator Fade(this SpriteRenderer spriteRenderer, Color original, Color target, float duration) {
+    private static IEnumerator Fade(SpriteRenderer spriteRenderer, Color original, Color target, float duration) {
         float timer = 0.0f;
         while (timer < duration) {
             timer += Time.fixedDeltaTime;
@@ -76,6 +76,20 @@ public static class Extensions {
             yield return Yielders.WaitForFixedUpdate;
         }
         spriteRenderer.color = target;
+    }
+
+    public static Coroutine FadeAlpha(this SpriteRenderer spriteRenderer, float speed, bool fadeToTransparent, MonoBehaviour monoBehaviour) {
+        return monoBehaviour.StartCoroutine(FadeAlpha(spriteRenderer, speed, fadeToTransparent));
+    }
+
+    private static IEnumerator FadeAlpha(SpriteRenderer spriteRenderer, float speed, bool fadeToTransparent) {
+        Color rgb = spriteRenderer.color;
+        float target = fadeToTransparent ? 0.0f : 1.0f;
+        while (spriteRenderer.color.a != target) {
+            rgb.a = Mathf.MoveTowards(rgb.a, target, speed * Time.fixedDeltaTime);
+            spriteRenderer.color = rgb;
+            yield return Yielders.WaitForFixedUpdate;
+        }
     }
 
     public static void FadeCanvas(this CanvasGroup canvasGroup, float fadeSpeed, bool fadeToTransparent, MonoBehaviour monoBehaviour, bool debug = false) {
@@ -145,5 +159,9 @@ public static class Extensions {
 
     public static bool Populated<T>(this T[] array) {
         return array != null && array.Length > 0;
+    }
+
+    public static Color WithAlpha(this Color colour, float alpha = 0.0f) {
+        return new Color(colour.r, colour.g, colour.b, alpha);
     }
 }

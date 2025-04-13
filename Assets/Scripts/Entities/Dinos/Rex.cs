@@ -7,8 +7,6 @@ using Utilities;
 namespace Entities.Dinos {
     public class Rex : Dino {
 
-        private static DinoAnimations _animations = new DinoAnimations(typeof(Rex).ToString());
-
         [SerializeField] private float _stackTime = 1.5f;
         [SerializeField] private float _attackSpeedMultiplier = 0.1f;
         [SerializeField] private int _maxStacks = 5;
@@ -17,6 +15,7 @@ namespace Entities.Dinos {
         private CountDownTimer _stackTimer = new CountDownTimer(0.0f);
 
         protected override void Start() {
+            _animations = new DinoAnimations("Rex");
             base.Start();
             _stackTimer.OnTimerStop += ResetStacks;
             AddTimer(_stackTimer);
@@ -40,7 +39,7 @@ namespace Entities.Dinos {
             }
         }
 
-        protected override DinoAnimations GetAnimations() {
+        protected override DinoAnimations InitAnimations() {
             return _animations;
         }
     }

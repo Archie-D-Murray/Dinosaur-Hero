@@ -12,8 +12,8 @@ namespace Utilities {
             MainCamera = Camera.main;
             PhysicsFPS = Mathf.Round(1.0f / Time.fixedUnscaledDeltaTime);
             Debug.Log($"Target physics frameRate => {PhysicsFPS}");
-
         }
+
         public Camera MainCamera;
         private Vector2 _mousePosition;
         public Vector2 TileMapMousePosition => Vector2Int.FloorToInt(_mousePosition) + Offset;
@@ -51,7 +51,7 @@ namespace Utilities {
             return Quaternion.AngleAxis(Vector2.SignedAngle(Vector2.up, (to - from).normalized), Vector3.forward);
         }
 
-        private static float PhysicsFPS;
+        private static float PhysicsFPS = 50.0f;
 
         public static float NormalizedFixedDeltaTime => Time.fixedDeltaTime * PhysicsFPS;
     }

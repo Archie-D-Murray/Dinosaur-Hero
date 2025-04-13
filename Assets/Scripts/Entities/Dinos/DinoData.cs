@@ -10,5 +10,6 @@ namespace Entities.Dinos {
         public int Cost;
         public Sprite Icon;
         public Sprite Sprite;
+        public string Name;
     }
 }

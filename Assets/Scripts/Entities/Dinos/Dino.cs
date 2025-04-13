@@ -21,21 +21,29 @@ namespace Entities.Dinos {
 
     public enum DinoType { Rex, Ankylo, Stego }
 
+    [RequireComponent(typeof(Health))]
+    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(BoxCollider2D))]
+    [RequireComponent(typeof(EffectHandler))]
+    [RequireComponent(typeof(DinoPathAgent))]
     public abstract class Dino : MonoBehaviour {
+        [SerializeField] protected float _maxHealth = 100.0f;
         [SerializeField] protected float _attackRadius = 5.0f;
         [SerializeField] protected float _damage = 5.0f;
         [SerializeField] protected float _speed = 5.0f;
         [SerializeField] protected float _attackTime = 5.0f;
         [SerializeField] protected float _attackFrame = 0.5f;
-
-        protected CountDownTimer _attackTimer = new CountDownTimer(0.0f);
-        protected CountDownTimer _attackFrameTimer = new CountDownTimer(0.0f);
+        [SerializeField] protected float _attackAnimationLength = 0.0f;
+        [SerializeField] protected float _animatorSpeed = 1.0f;
+        [SerializeField] protected CountDownTimer _attackTimer = new CountDownTimer(0.0f);
+        [SerializeField] protected CountDownTimer _attackFrameTimer = new CountDownTimer(0.0f);
 
         protected bool _pendingAttackFrame;
         protected List<Timer> _timers = new List<Timer>();
         protected Health _health;
         protected Rigidbody2D _rb2D;
         protected DinoPathAgent _agent;
+        protected DinoAnimations _animations;
         protected EffectHandler _handler;
         protected int _currentAnimation;
         protected Animator _animator;
@@ -46,10 +54,14 @@ namespace Entities.Dinos {
             _handler = GetComponent<EffectHandler>();
             _agent = GetComponent<DinoPathAgent>();
             _animator = GetComponent<Animator>();
+            _animations = InitAnimations();
             _handler.Init(_health);
+            _health.SetMaxHealth(_maxHealth);
             AddTimer(_attackTimer);
             AddTimer(_attackFrameTimer);
             _attackTimer.OnTimerStop += ResetAnimatorSpeed;
+            _attackAnimationLength = _animator.runtimeAnimatorController.animationClips
+                .First(clip => Animator.StringToHash(clip.name) == _animations.Attack).length;
         }
 
         protected virtual Collider2D[] GetTargets() {
@@ -67,7 +79,7 @@ namespace Entities.Dinos {
         ///<summary>Called upon attack frame</summary>
         ///<param name="target">Array of enemies to attack => assumed not empty or null</param>
         protected abstract void Attack(Collider2D[] target);
-        protected abstract DinoAnimations GetAnimations();
+        protected abstract DinoAnimations InitAnimations();
 
         private void FixedUpdate() {
             _agent.Speed = _speed * _handler.SpeedModifier;
@@ -78,7 +90,7 @@ namespace Entities.Dinos {
             if (_attackTimer.IsFinished && GetTargets().Populated()) {
                 _attackTimer.Reset(AttackTime());
                 _attackFrameTimer.Reset(AttackTime() * _attackFrame);
-                _animator.speed = _attackTime / AttackTime();
+                _animatorSpeed = _attackAnimationLength / AttackTime();
                 _pendingAttackFrame = true;
             }
             if (_attackFrameTimer.IsFinished && _pendingAttackFrame) {
@@ -88,12 +100,12 @@ namespace Entities.Dinos {
                 }
                 _pendingAttackFrame = false;
             }
-            if (_attackTimer.IsRunning) {
-                SetAnimation(GetAnimations().Attack);
+            if (_attackTimer.IsRunning && !_attackTimer.IsFinished) {
+                SetAnimation(_animations.Attack);
             } else if (_rb2D.velocity.sqrMagnitude > 0.01f) {
-                SetAnimation(GetAnimations().Move);
+                SetAnimation(_animations.Move);
             } else {
-                SetAnimation(GetAnimations().Idle);
+                SetAnimation(_animations.Idle);
             }
         }
 
@@ -101,10 +113,11 @@ namespace Entities.Dinos {
             if (_currentAnimation == animation) { return; }
             _currentAnimation = animation;
             _animator.Play(_currentAnimation);
+            _animator.speed = _animatorSpeed;
         }
 
         protected void ResetAnimatorSpeed() {
-            _animator.speed = 1.0f;
+            _animatorSpeed = 1.0f;
         }
     }
 }

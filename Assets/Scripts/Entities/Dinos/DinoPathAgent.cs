@@ -15,38 +15,27 @@ namespace Entities.Dinos {
         public bool Move = true;
 
         [SerializeField] private int _index = 0;
-
+        [SerializeField] private Vector2 _target;
         private Rigidbody2D _rb2D;
 
         private void Start() {
             _rb2D = GetComponent<Rigidbody2D>();
+            _target = _rb2D.position;
         }
 
         private void FixedUpdate() {
             if (Move && _points != null) {
-                _rb2D.MovePosition(TravelPath(ref _index, _rb2D.position, Speed * Helpers.NormalizedFixedDeltaTime));
+                _target = TravelPath();
+                _rb2D.MovePosition(TravelPath());
             }
         }
 
-        public Vector2 TravelPath(ref int index, Vector2 position, float speed) {
-            if (speed <= 0.0f) { return position; }
-            float sqrDistance = 0.0f;
-            Vector2 next = position;
-            while (sqrDistance <= speed * speed) {
-                Vector2 target = _points[index].position;
-                if (index == _points.Length - 1) {
-                    next = Vector2.MoveTowards(position, target, speed);
-                    break;
-                } else {
-                    next = Vector2.MoveTowards(position, target, speed);
-                    if (index < _points.Length && Vector2.Distance(target, next) <= 0.1f) {
-                        index++;
-                    }
-                    sqrDistance += (next - position).sqrMagnitude;
-                }
+        public Vector2 TravelPath() {
+            if (Speed <= 0.0f) { return _rb2D.position; }
+            if (Vector2.Distance(_points[_index].position, _rb2D.position) <= 0.01f && _index < _points.Length - 1) {
+                _index++;
             }
-
-            return next;
+            return Vector2.MoveTowards(_rb2D.position, _points[_index].position, Speed * Time.fixedDeltaTime);
         }
     }
 }

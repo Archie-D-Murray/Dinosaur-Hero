@@ -5,23 +5,37 @@ using UnityEngine;
 using Utilities;
 using ProjectileComponents;
 using System;
+using System.Linq;
 
 namespace Entities.Towers {
 
+    public class TowerAnimations {
+        public int Idle;
+        public int Attack;
+
+        public TowerAnimations(string name) {
+            Idle = Animator.StringToHash($"{name}_Idle");
+            Attack = Animator.StringToHash($"{name}_Attack");
+        }
+    }
+
     [RequireComponent(typeof(Health))]
-    [RequireComponent(typeof(Collider2D))]
+    [RequireComponent(typeof(BoxCollider2D))]
+    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(EffectHandler))]
     [RequireComponent(typeof(SFXEmitter))]
     public abstract class Tower : MonoBehaviour {
         [SerializeField] protected GameObject _projectile;
+        [SerializeField] protected float _maxHealth = 10.0f;
         [SerializeField] protected float _damage = 1.0f;
         [SerializeField] protected float _range = 2.0f;
         [SerializeField] protected float _attackTime = 1.0f;
         [SerializeField] protected float _attackFrame = 0.5f;
+        [SerializeField] protected float _attackAnimationLength = 1.0f;
         [SerializeField] protected float _projectileDuration = 4.0f;
         [SerializeField] protected float _projectileSpeed = 5.0f;
         [SerializeField] protected bool _canShoot = true;
         [SerializeField] protected bool _pendingAttackFrame = false;
-
         [SerializeField] protected CountDownTimer _attackTimer = new CountDownTimer(0.0f);
         [SerializeField] protected CountDownTimer _attackFrameTimer = new CountDownTimer(0.0f);
 
@@ -29,8 +43,7 @@ namespace Entities.Towers {
         protected Health _health;
         protected Animator _animator;
         protected SFXEmitter _emitter;
-
-        protected readonly int _fireID = Animator.StringToHash("Fire");
+        protected TowerAnimations _animations;
 
         public abstract void Shoot(Collider2D[] enemies);
 
@@ -42,7 +55,7 @@ namespace Entities.Towers {
             _health = GetComponent<Health>();
             _health.OnDeath += () => {
                 _canShoot = false;
-                Instantiate(Assets.Instance.towerDeathParticles, transform.position, transform.rotation);
+                Instantiate(Assets.Instance.TowerDeathParticles, transform.position, transform.rotation);
                 Destroy(gameObject, _emitter.Length(SoundEffectType.Death));
                 enabled = false;
             };
@@ -50,12 +63,23 @@ namespace Entities.Towers {
                 _emitter.Play(SoundEffectType.Hit);
                 // Instantiate(Assets.Instance.towerHitParticles, transform.position, Quaternion.identity).GetOrAddComponent<AutoDestroy>().Duration = 1f;
             };
+            _health.SetMaxHealth(_maxHealth);
             _timers.Add(_attackTimer);
             _timers.Add(_attackFrameTimer);
             AddTimer();
+            _animations = InitAnimations();
+            _attackTimer.OnTimerStop += IdleAnimation;
+            _attackAnimationLength = _animator.runtimeAnimatorController.animationClips
+                .First(clip => Animator.StringToHash(clip.name) == _animations.Attack).length;
+        }
+
+        private void IdleAnimation() {
+            _animator.Play(_animations.Idle);
+            _animator.speed = 1.0f;
         }
 
         protected virtual void AddTimer() { }
+        protected abstract TowerAnimations InitAnimations();
 
         private void FixedUpdate() {
             foreach (Timer timer in _timers) {
@@ -67,6 +91,8 @@ namespace Entities.Towers {
                     _pendingAttackFrame = true;
                     _attackFrameTimer.Reset(_attackTime * _attackFrame);
                     _attackTimer.Reset(_attackTime);
+                    _animator.Play(_animations.Attack);
+                    _animator.speed = _attackAnimationLength / _attackTime;
                 }
             }
             if (_attackFrameTimer.IsFinished && _pendingAttackFrame) {

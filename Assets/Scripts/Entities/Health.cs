@@ -23,16 +23,17 @@ namespace Entities {
 
         [SerializeField] private float _currentHealth;
         [SerializeField] private float _maxHealth;
+        [SerializeField] private float _damageMultiplier = 1.0f;
+
+        public float DamageMultiplier { get => _damageMultiplier; set => _damageMultiplier = value; }
 
         private void Awake() {
             _currentHealth = _maxHealth;
         }
 
-        private void UpdateMaxHealth(float health) {
-            Debug.Log($"Updated max health for {name} to {health}");
-            float diff = health - _currentHealth;
+        public void SetMaxHealth(float health) {
             _maxHealth = health;
-            Heal(diff);
+            _currentHealth = health;
         }
 
         /// <summary>Damages an entity</summary>
@@ -45,8 +46,9 @@ namespace Entities {
                 return;
             }
             damage = Mathf.Max(damage, 0.0f);
+            float mitigatedDamage = damage * _damageMultiplier;
             if (damage != 0.0f) {
-                _currentHealth = Mathf.Max(0.0f, _currentHealth - damage);
+                _currentHealth = Mathf.Max(0.0f, _currentHealth - mitigatedDamage);
                 OnDamage?.Invoke(damage, source);
             }
             if (_currentHealth == 0.0f) {

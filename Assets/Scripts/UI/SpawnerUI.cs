@@ -23,6 +23,7 @@ namespace UI {
         [SerializeField] private Image _sprite;
         [SerializeField] private TMP_Text _name;
         [SerializeField] private TMP_Text _desc;
+        [SerializeField] private TMP_Text _count;
         [SerializeField] private Button _next;
         [SerializeField] private Button _prev;
 
@@ -77,6 +78,7 @@ namespace UI {
             _name.text = _lookup[_type].Name;
             _sprite.sprite = _lookup[_type].Sprite;
             _desc.text = _lookup[_type].Description;
+            _count.text = $"x{Globals.Instance.Storage(_type).Count}";
         }
 
         public void Toggle() {

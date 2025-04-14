@@ -12,15 +12,17 @@ namespace Entities.Dinos {
         public int Idle;
         public int Move;
         public int Attack;
+        public int Death;
 
         public DinoAnimations(string name) {
             Idle = Animator.StringToHash($"{name}_Idle");
             Move = Animator.StringToHash($"{name}_Move");
             Attack = Animator.StringToHash($"{name}_Attack");
+            Death = Animator.StringToHash($"{name}_Death");
         }
     }
 
-    public enum DinoType { Rex, Ankylo, Stego }
+    public enum DinoType { Rex, Trike, Stego }
 
     [RequireComponent(typeof(Health))]
     [RequireComponent(typeof(Rigidbody2D))]
@@ -50,8 +52,12 @@ namespace Entities.Dinos {
         protected Animator _animator;
         protected SpriteRenderer _renderer;
         protected Material _material;
+        protected DinoType _type;
+
+        public DinoType Type => _type;
 
         protected virtual void Start() {
+            _type = InitType();
             _health = GetComponent<Health>();
             _rb2D = GetComponent<Rigidbody2D>();
             _handler = GetComponent<EffectHandler>();
@@ -63,10 +69,19 @@ namespace Entities.Dinos {
             _handler.Init(_health);
             _health.SetMaxHealth(_maxHealth);
             _health.OnDamage += OnDamage;
+            _health.OnDeath += OnDeath;
             AddTimer(_attackTimer);
             AddTimer(_attackFrameTimer);
             _attackTimer.OnTimerStop += ResetAnimatorSpeed;
             _attackAnimationLength = _animator.GetRuntimeClip(_animations.Attack).length;
+            GameManager.Instance.RegisterDino(this);
+        }
+
+        private void OnDeath() {
+            GameManager.Instance.UnregisterDino(this);
+            gameObject.layer = 0;
+            _animator.Play(_animations.Death);
+            Destroy(gameObject, _animator.GetRuntimeClip(_animations.Death).length + 0.1f);
         }
 
         private void OnDamage(float damage, GameObject source) {
@@ -90,8 +105,10 @@ namespace Entities.Dinos {
         ///<param name="target">Array of enemies to attack => assumed not empty or null</param>
         protected abstract void Attack(Collider2D[] target);
         protected abstract DinoAnimations InitAnimations();
+        protected abstract DinoType InitType();
 
         private void FixedUpdate() {
+            if (_health.Dead) { return; }
             _agent.Speed = _speed * _handler.SpeedModifier;
             _agent.Move = !_handler.Stunned && !_attackTimer.IsRunning;
             foreach (Timer timer in _timers) {

@@ -8,7 +8,6 @@ namespace Entities.Dinos {
         public DinoType Type;
         public GameObject Prefab;
         public int Cost;
-        public Sprite Icon;
         public Sprite Sprite;
         public string Name;
         public string Description;

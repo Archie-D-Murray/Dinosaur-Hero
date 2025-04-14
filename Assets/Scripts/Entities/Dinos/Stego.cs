@@ -34,5 +34,9 @@ namespace Entities.Dinos {
         protected override DinoAnimations InitAnimations() {
             return new DinoAnimations("Stego");
         }
+
+        protected override DinoType InitType() {
+            return DinoType.Stego;
+        }
     }
 }

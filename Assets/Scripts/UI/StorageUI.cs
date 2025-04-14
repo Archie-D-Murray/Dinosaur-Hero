@@ -49,7 +49,7 @@ namespace UI {
                 _lookup.Add(data.Type, data);
 
                 GameObject storageSlot = Instantiate(_dinoStoragePrefab, _storageRoot);
-                storageSlot.GetComponentsInChildren<Image>().First(image => image.gameObject.HasComponent<IconTag>()).sprite = data.Icon;
+                storageSlot.GetComponentsInChildren<Image>().First(image => image.gameObject.HasComponent<IconTag>()).sprite = data.Sprite;
                 TMP_Text counter = storageSlot.GetComponentInChildren<TMP_Text>();
                 counter.text = $"x{Globals.Instance.Storage(data.Type).Count}";
                 _storage.Add(data.Type, counter);

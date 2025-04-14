@@ -17,16 +17,18 @@ namespace Entities.Dinos {
         [SerializeField] private int _index = 0;
         [SerializeField] private Vector2 _target;
         private Rigidbody2D _rb2D;
+        private SpriteRenderer _renderer;
 
         private void Start() {
             _rb2D = GetComponent<Rigidbody2D>();
+            _renderer = GetComponent<SpriteRenderer>();
             _target = _rb2D.position;
         }
 
         private void FixedUpdate() {
             if (Move && _points != null) {
                 _target = TravelPath();
-                transform.rotation = Helpers.Look2D(_rb2D.position, _target);
+                _renderer.flipX = Mathf.Sign(_target.x - _rb2D.position.x) > 0;
                 _rb2D.MovePosition(TravelPath());
             }
         }

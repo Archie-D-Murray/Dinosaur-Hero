@@ -42,5 +42,9 @@ namespace Entities.Dinos {
         protected override DinoAnimations InitAnimations() {
             return _animations;
         }
+
+        protected override DinoType InitType() {
+            return DinoType.Rex;
+        }
     }
 }

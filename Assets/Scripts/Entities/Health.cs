@@ -12,6 +12,7 @@ namespace Entities {
         public float GetCurrentHealth => _currentHealth;
         public float GetMaxHealth => _maxHealth;
         public bool Invulnerable => _invulnerable;
+        public bool Dead => _currentHealth == 0.0f;
         public Action<float, GameObject> OnDamage;
         public Action<float> OnHeal;
         public Action OnDeath;

@@ -30,6 +30,10 @@ public class GameManager : Singleton<GameManager> {
         }
     }
 
+    public void ReturnLiveDinos() {
+        Globals.Instance.RetriveLiveDinos(_dinos);
+    }
+
     private void CopyCurrent() {
         _initialMoney = Globals.Instance.Money;
         DinoType[] _types = Enum.GetValues(typeof(DinoType)).Cast<DinoType>().ToArray();

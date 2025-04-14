@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: Stego
   m_EditorClassIdentifier: 
   Type: 2
-  Prefab: {fileID: 8620175789048450551, guid: 56aad702a038f354a8009f23e26bec88, type: 3}
+  Prefab: {fileID: 5052233190729827408, guid: 56aad702a038f354a8009f23e26bec88, type: 3}
   Cost: 125
-  Icon: {fileID: 7061260028621710027, guid: 401f527e8ff1dcd47814613dd572ca83, type: 3}
-  Sprite: {fileID: 7061260028621710027, guid: 401f527e8ff1dcd47814613dd572ca83, type: 3}
-  Name: Stegosaurus
+  Sprite: {fileID: 877381103, guid: eb0681dabc4c2a3458ee4231c7852950, type: 3}
+  Name: Stego
   Description: High durability + Reflects incoming damage

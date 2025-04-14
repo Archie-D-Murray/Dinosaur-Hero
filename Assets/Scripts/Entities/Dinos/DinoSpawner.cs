@@ -24,11 +24,9 @@ namespace Entities.Dinos {
         [SerializeField] private GameObject _queueUIPrefab;
         [SerializeField] private GameObject _queueObjectPrefab;
 
-        private SpriteRenderer _highlight;
         private Dictionary<DinoType, DinoData> _lookup = new Dictionary<DinoType, DinoData>();
         private Queue<DinoType> _spawnQueue = new Queue<DinoType>();
         private CountDownTimer _spawnTimer;
-        private Coroutine _fade = null;
         private Transform _queueUI;
         private CanvasFader _fader;
         [SerializeField] private Image _progress;
@@ -42,15 +40,16 @@ namespace Entities.Dinos {
                 _points[i] = transform.GetChild(i);
             }
             _spawnTimer = new CountDownTimer(_spawnDelay);
-            _highlight = GetComponent<SpriteRenderer>();
             _queueUI = Instantiate(_queueUIPrefab, UIManager.Instance.WorldCanvas).transform;
             _queueUI.transform.position = transform.position + Vector3.up;
             _fader = _queueUI.GetComponent<CanvasFader>();
-            _queueUI = _queueUI.GetChild(0);
+            _queueUI = _queueUI.GetChild(0).GetChild(0);
         }
 
         private void FixedUpdate() {
-            _spawnTimer.Update(Time.fixedDeltaTime);
+            if (_spawnQueue.Count > 0) {
+                _spawnTimer.Update(Time.fixedDeltaTime);
+            }
             if (_progress) {
                 _progress.fillAmount = _spawnTimer.Progress();
             } else {
@@ -76,18 +75,10 @@ namespace Entities.Dinos {
         }
 
         public void OnPointerEnter(PointerEventData eventData) {
-            if (_fade != null) {
-                StopCoroutine(_fade);
-            }
-            _fade = _highlight.FadeAlpha(2.0f, false, this);
             _fader.Show();
         }
 
         public void OnPointerExit(PointerEventData eventData) {
-            if (_fade != null) {
-                StopCoroutine(_fade);
-            }
-            _fade = _highlight.FadeAlpha(2.0f, true, this);
             _fader.Hide();
         }
     }

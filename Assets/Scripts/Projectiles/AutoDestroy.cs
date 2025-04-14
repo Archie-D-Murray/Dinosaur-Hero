@@ -4,10 +4,23 @@ namespace ProjectileComponents {
 
     [DefaultExecutionOrder(99)]
     public class AutoDestroy : MonoBehaviour {
-        public float Duration;
+        [SerializeField] private float _duration;
+        [SerializeField] private bool _autoDestroy = false;
+
+        public float Duration {
+            get {
+                return _duration;
+            }
+            set {
+                _duration = value;
+                Destroy(gameObject, _duration);
+            }
+        }
 
         public void Start() {
-            Destroy(gameObject, Duration);
+            if (_autoDestroy) {
+                Destroy(gameObject, _duration);
+            }
         }
 
         public void OnTriggerEnter2D(Collider2D collider) {

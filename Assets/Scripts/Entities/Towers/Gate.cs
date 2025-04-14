@@ -1,4 +1,7 @@
+using UI;
+
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Entities.Towers {
     [RequireComponent(typeof(Health))]
@@ -12,14 +15,17 @@ namespace Entities.Towers {
         [SerializeField] private float[] _armourDestruction = new float[] { 0.5f, 0.0f };
         [SerializeField] private float[] _damageMitigation = new float[] { 0.9f, 1.0f };
         [SerializeField] private int _currentMitigationIndex = 0;
+        [SerializeField] private GameObject _healthBarPrefab;
 
         [SerializeField] private GameObject[] _armourDestructionEffects;
 
         private Health _health;
         private EffectHandler _handler;
-        protected SpriteRenderer _renderer;
-        protected Material _material;
-        protected Collider2D _collider;
+        private SpriteRenderer _renderer;
+        private Material _material;
+        private Collider2D _collider;
+        private Image _healthBar;
+        private SFXEmitter _emitter;
 
         private void Start() {
             _health = GetComponent<Health>();
@@ -32,6 +38,15 @@ namespace Entities.Towers {
             _handler = GetComponent<EffectHandler>();
             _handler.Init(_health);
             _collider = GetComponent<Collider2D>();
+            _emitter = GetComponent<SFXEmitter>();
+
+            GameObject healthBar = Instantiate(_healthBarPrefab, UIManager.Instance.WorldCanvas);
+            healthBar.transform.SetPositionAndRotation(transform.position + 1.5f * Vector3.up, Quaternion.identity);
+            _healthBar = healthBar.GetComponentInChildren<Tags.UI.ReadoutTag>().GetComponent<Image>();
+            if (_healthBar) {
+                _healthBar.fillAmount = _health.GetPercentHealth;
+                Debug.Log($"Inited healthbar: {_healthBar.name}");
+            }
         }
 
         private void OnDamage(float damage, GameObject source) {
@@ -40,13 +55,19 @@ namespace Entities.Towers {
                 _currentMitigationIndex = Mathf.Min(_currentMitigationIndex + 1, _armourDestruction.Length - 1);
                 _health.DamageMultiplier = _damageMitigation[_currentMitigationIndex];
             }
+            _emitter.Play(SoundEffectType.Hit);
             _renderer.FlashDamage(Assets.Instance.DamageFlash, _material, 0.25f, this);
+            if (_healthBar) {
+                _healthBar.fillAmount = _health.GetPercentHealth;
+            }
         }
 
         private void OnDeath() {
             _collider.enabled = false;
             TowerManager.Instance.DisableAllTowers();
             GameManager.Instance.OnWin?.Invoke();
+            GameManager.Instance.ReturnLiveDinos();
+            Destroy(_healthBar.transform.parent.gameObject);
             Destroy(gameObject, 0.5f);
         }
     }

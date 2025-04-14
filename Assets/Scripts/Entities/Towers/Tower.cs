@@ -39,6 +39,7 @@ namespace Entities.Towers {
         [SerializeField] protected float _projectileSpeed = 5.0f;
         [SerializeField] protected bool _canShoot = true;
         [SerializeField] protected bool _pendingAttackFrame = false;
+        [SerializeField] protected int _reward = 50;
         [SerializeField] protected CountDownTimer _attackTimer = new CountDownTimer(0.0f);
         [SerializeField] protected CountDownTimer _attackFrameTimer = new CountDownTimer(0.0f);
 
@@ -69,9 +70,11 @@ namespace Entities.Towers {
             _material = _renderer.material;
             _health.OnDeath += () => {
                 TowerManager.Instance.OnTowerDestroy(this);
+                Globals.Instance.ChangeMoney(_reward);
                 _canShoot = false;
                 _collider.enabled = false;
-                Destroy(gameObject, _emitter.Length(SoundEffectType.Death));
+                gameObject.layer = 0;
+                Destroy(gameObject);
                 enabled = false;
             };
             _health.OnDamage += (_, _) => {

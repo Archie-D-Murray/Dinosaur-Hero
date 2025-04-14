@@ -19,7 +19,7 @@ public class DinoStorage {
     }
 }
 
-public class Globals : Singleton<Globals> {
+public class Globals : PersistentSingleton<Globals> {
     [SerializeField] private int _money;
     [SerializeField] private DinoStorage[] _storage;
 
@@ -43,6 +43,7 @@ public class Globals : Singleton<Globals> {
 
     public LayerMask TowerLayer;
     public LayerMask DinoLayer;
+    [SerializeField] private int _startingMoney = 500;
 
     public void ChangeMoney(int change) {
         _money += change;
@@ -69,9 +70,16 @@ public class Globals : Singleton<Globals> {
         _lookup.Clear();
         DinoType[] values = Enum.GetValues(typeof(DinoType)).Cast<DinoType>().ToArray();
         _storage = new DinoStorage[values.Length];
+        _money = _startingMoney;
         for (int i = 0; i < values.Length; i++) {
             _storage[i] = new DinoStorage(values[i]);
             _lookup.Add(_storage[i].Type, i);
+        }
+    }
+
+    public void RetriveLiveDinos(IEnumerable<Dino> dinos) {
+        foreach (Dino dino in dinos) {
+            Globals.Instance.Storage(dino.Type).Count++;
         }
     }
 }

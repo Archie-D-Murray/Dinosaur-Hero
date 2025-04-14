@@ -65,6 +65,7 @@ namespace UI {
                 if (closestSpawner != null && closestSpawner.TryGetComponent(out DinoSpawner spawner)) {
                     spawner.QueueSpawn(_type);
                     Globals.Instance.Storage(_type).Count--;
+                    UpdateUI();
                 }
             }
             if (Input.GetKeyDown(KeyCode.RightBracket)) {

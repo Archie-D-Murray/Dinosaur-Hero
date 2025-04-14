@@ -22,6 +22,9 @@ like stunning, reflecting damage and an ever increasing attack speed.
  - `F2` to open spawner menu
  - Can optionally click on any buttons instead
 
+## Screenshot:
+![Demo](./Share/Level_1.png)
+
 ## Third-Party Assets:
  - Dinosaur Sprites: (https://colorsqueaks.itch.io/pixelsaurs)
  - Dino Hit: (https://pixabay.com/sound-effects/three-flesh-impacts-82553/)

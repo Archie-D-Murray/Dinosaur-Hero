@@ -21,18 +21,6 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: e127e5848c18448458f611e9bde4c691, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7878350319992209165, guid: e127e5848c18448458f611e9bde4c691, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7878350319992209165, guid: e127e5848c18448458f611e9bde4c691, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7878350319992209165, guid: e127e5848c18448458f611e9bde4c691, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
@@ -135,6 +123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af3da2c9329d51854a9e7e2f23e0ba61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _particleManagers: []
+  _effects: []
   Stunned: 0
   SpeedModifier: 1
 --- !u!50 &4266087095531268865

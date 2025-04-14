@@ -40,6 +40,7 @@ namespace UI {
             _spawnerLayer = 1 << LayerMask.NameToLayer("Spawner");
             _next.onClick.AddListener(Next);
             _prev.onClick.AddListener(Prev);
+            _close.onClick.AddListener(Hide);
             UpdateUI();
         }
 

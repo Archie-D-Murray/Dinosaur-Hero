@@ -81,6 +81,8 @@ Cargo.lock
 #Builds/Video Logs
 *.zip
 Assets/Plugins/CodeAssist/
+*.mov
+*.mp4
 
 # Unity crash files
 *.blob
